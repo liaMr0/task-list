@@ -1,5 +1,5 @@
-describe('Task List Page', () => {
-    it('should add a new task', () => {
+describe.only('Task List Page', () => {
+    it.only('should add a new task', () => {
         cy.visit('/')
         cy.get('input[placeholder="Type to add new task"]').type('New test task')
         cy.contains('Add').click()
