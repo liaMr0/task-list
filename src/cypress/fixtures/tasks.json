@@ -1,0 +1,30 @@
+[
+    {
+        "id": 1,
+        "description": "Revisar el correo de contacto: example@mail.com para actualizaciones."
+    },
+    {
+        "id": 2,
+        "description": "Visitar la página web del proyecto: https://www.example.com y revisar los documentos."
+    },
+    {
+        "id": 3,
+        "description": "Crear una nueva tarea en el sistema y mencionar a @john_doe para su revisión."
+    },
+    {
+        "id": 4,
+        "description": "Publicar en redes sociales usando el hashtag #Productividad para aumentar la visibilidad."
+    },
+    {
+        "id": 5,
+        "description": "Enviar un recordatorio por correo a example2@mail.com sobre la reunión del lunes."
+    },
+    {
+        "id": 6,
+        "description": "Revisar las estadísticas en https://analytics.example.com y compartir con @jane_doe."
+    },
+    {
+        "id": 7,
+        "description": "Participar en la discusión del grupo usando #Colaboración y mencionar a @team_lead."
+    }
+]

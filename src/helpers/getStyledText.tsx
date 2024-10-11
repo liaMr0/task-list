@@ -10,7 +10,8 @@ export const getStyledText = (text: string | undefined, condensed: boolean): Rea
 
     return words.map((word, index) => {
         let style: React.CSSProperties = {
-            display: 'inline-block',
+            display: 'inline-flex',
+            alignItems: 'center',
             marginRight: '4px',
             marginBottom: '4px',
             maxWidth: '100%',
@@ -50,7 +51,7 @@ export const getStyledText = (text: string | undefined, condensed: boolean): Rea
             };
             emailCount++;
             if (condensed) {
-                content = <><Mail size={14} className="inline mr-1" />Mail {emailCount}</>;
+                content = <><Mail size={14} className=" mr-2" />Mail {emailCount}</>;
             }
         } else if (/https?:\/\/[^\s]+/.test(word) || /www.[^\s]+/.test(word)) {
             style = {
@@ -63,7 +64,7 @@ export const getStyledText = (text: string | undefined, condensed: boolean): Rea
             };
             linkCount++;
             if (condensed) {
-                content = <><LinkIcon size={14} className="inline mr-1" />Link {linkCount}</>;
+                content = <><LinkIcon size={14} className="mr-2 " />Link {linkCount}</>;
             }
         }
 
