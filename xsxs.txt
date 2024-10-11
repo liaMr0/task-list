@@ -1,0 +1,541 @@
+import { useTaskManager } from '@/hooks/useTaskManager'
+import { useMobileDetection } from '@/hooks/useMobileDetection'
+import React from 'react'
+import { TaskList } from '@/components/taskList/TaskList'
+import { Task } from '@/types/task';
+
+
+type TaskManagerHook = {
+    tasks: Task[];
+    addTask: (description: string) => void;
+    editTask: (id: number, newDescription: string) => void;
+    isLoading: boolean;
+    error: string | null;
+};
+
+describe('TaskList Component', () => {
+    it('renders loading state', () => {
+        cy.stub(React, 'useEffect').callsFake(() => { })
+        cy.stub(useTaskManager, 'useTaskManager').returns({
+            tasks: [],
+            addTask: cy.stub().as('addTask'),
+            editTask: cy.stub().as('editTask'),
+            isLoading: true,
+            error: null,
+        } as TaskManagerHook)
+        cy.stub(useMobileDetection, 'useMobileDetection').returns(false)
+
+        cy.mount(<TaskList />)
+        cy.contains('Loading tasks...').should('be.visible')
+    })
+
+    it('renders error state', () => {
+        const errorMessage = 'Failed to load tasks'
+        cy.stub(React, 'useEffect').callsFake(() => { })
+        cy.stub(useTaskManager, 'useTaskManager').returns({
+            tasks: [],
+            addTask: cy.stub().as('addTask'),
+            editTask: cy.stub().as('editTask'),
+            isLoading: false,
+            error: errorMessage,
+        } as TaskManagerHook)
+        cy.stub(useMobileDetection, 'useMobileDetection').returns(false)
+
+        cy.mount(<TaskList />)
+        cy.contains(errorMessage).should('be.visible')
+    })
+
+    it('renders task form and list', () => {
+        const tasks: Task[] = [
+            { id: 1, description: 'Task 1' },
+            { id: 2, description: 'Task 2' },
+        ]
+        cy.stub(React, 'useEffect').callsFake(() => { })
+        cy.stub(useTaskManager, 'useTaskManager').returns({
+            tasks,
+            addTask: cy.stub().as('addTask'),
+            editTask: cy.stub().as('editTask'),
+            isLoading: false,
+            error: null,
+        } as TaskManagerHook)
+        cy.stub(useMobileDetection, 'useMobileDetection').returns(false)
+
+        cy.mount(<TaskList />)
+        cy.get('input[placeholder="Type to add new task"]').should('be.visible')
+        cy.contains('Task 1').should('be.visible')
+        cy.contains('Task 2').should('be.visible')
+    })
+})
+
+import ActionBar from '@/components/taskList/ActionBar'
+import React from 'react'
+
+describe('ActionBar Component', () => {
+    const defaultProps = {
+        showElements: true,
+        newTask: '',
+        isNarrowScreen: false,
+        editingTaskId: null,
+        hideElements: cy.stub(),
+        handleSubmit: cy.stub(),
+    }
+
+    it('renders correctly when not narrow screen', () => {
+        cy.mount(<ActionBar {...defaultProps} />)
+        cy.contains('Open').should('exist')
+        cy.contains('Today').should('exist')
+        cy.contains('Public').should('exist')
+        cy.contains('Highlight').should('exist')
+        cy.contains('Estimation').should('exist')
+        cy.contains('Cancel').should('exist')
+        cy.contains('Ok').should('exist')
+    })
+
+    it('renders correctly when narrow screen', () => {
+        cy.mount(<ActionBar {...defaultProps} isNarrowScreen={true} />)
+        cy.contains('Cancel').should('not.exist')
+        cy.get('button').last().find('svg').should('exist')
+    })
+
+    it('disables buttons when newTask is empty', () => {
+        cy.mount(<ActionBar {...defaultProps} />)
+        cy.contains('Open').should('be.disabled')
+        cy.contains('Today').should('be.disabled')
+        cy.contains('Public').should('be.disabled')
+        cy.contains('Highlight').should('be.disabled')
+        cy.contains('Estimation').should('be.disabled')
+    })
+
+    it('enables buttons when newTask is not empty', () => {
+        cy.mount(<ActionBar {...defaultProps} newTask="New Task" />)
+        cy.contains('Open').should('not.be.disabled')
+        cy.contains('Today').should('not.be.disabled')
+        cy.contains('Public').should('not.be.disabled')
+        cy.contains('Highlight').should('not.be.disabled')
+        cy.contains('Estimation').should('not.be.disabled')
+    })
+
+    it('calls hideElements when Cancel is clicked', () => {
+        const hideElements = cy.stub()
+        cy.mount(<ActionBar {...defaultProps} hideElements={hideElements} />)
+        cy.contains('Cancel').click()
+        cy.wrap(hideElements).should('have.been.called')
+    })
+
+    it('calls handleSubmit when Ok is clicked and newTask is not empty', () => {
+        const handleSubmit = cy.stub()
+        cy.mount(<ActionBar {...defaultProps} newTask="New Task" handleSubmit={handleSubmit} />)
+        cy.contains('Add').click()
+        cy.wrap(handleSubmit).should('have.been.called')
+    })
+})
+
+import React from 'react'
+import { Mail } from 'lucide-react'
+import Button from '@/components/Button'
+
+describe('Button Component', () => {
+    it('renders correctly', () => {
+        cy.mount(
+            <Button
+                icon={<Mail data-testid="mail-icon" />}
+                text="Send Email"
+                disabled={false}
+            />
+        )
+        cy.get('[data-testid="mail-icon"]').should('exist')
+        cy.contains('Send Email').should('exist')
+    })
+
+    it('applies custom className', () => {
+        cy.mount(
+            <Button
+                icon={<Mail />}
+                text="Send Email"
+                disabled={false}
+                className="custom-class"
+            />
+        )
+        cy.get('button').should('have.class', 'custom-class')
+    })
+
+    it('disables the button when disabled prop is true', () => {
+        cy.mount(
+            <Button
+                icon={<Mail />}
+                text="Send Email"
+                disabled={true}
+            />
+        )
+        cy.get('button').should('be.disabled')
+    })
+
+    it('hides text on narrow screens', () => {
+        cy.viewport('iphone-x')
+        cy.mount(
+            <Button
+                icon={<Mail />}
+                text="Send Email"
+                disabled={false}
+            />
+        )
+        cy.contains('Send Email').should('not.be.visible')
+    })
+})
+
+import CanvasInput from "@/components/CanvasInput"
+
+describe('CanvasInput Component', () => {
+    it('renders correctly', () => {
+        cy.mount(
+            <CanvasInput
+                value=""
+                onChange={cy.stub()}
+                onFocus={cy.stub()}
+                placeholder="Enter text"
+            />
+        )
+        cy.get('input').should('exist')
+        cy.contains('Enter text').should('exist')
+    })
+
+    it('updates value on change', () => {
+        const onChange = cy.stub()
+        cy.mount(
+            <CanvasInput
+                value=""
+                onChange={onChange}
+                onFocus={cy.stub()}
+                placeholder="Enter text"
+            />
+        )
+        cy.get('input').type('Hello')
+        cy.wrap(onChange).should('have.been.calledWith', 'Hello')
+    })
+
+    it('calls onFocus when input is focused', () => {
+        const onFocus = cy.stub()
+        cy.mount(
+            <CanvasInput
+                value=""
+                onChange={cy.stub()}
+                onFocus={onFocus}
+                placeholder="Enter text"
+            />
+        )
+        cy.get('input').focus()
+        cy.wrap(onFocus).should('have.been.called')
+    })
+
+    it('styles mentions correctly', () => {
+        cy.mount(
+            <CanvasInput
+                value="Hello @user"
+                onChange={cy.stub()}
+                onFocus={cy.stub()}
+                placeholder="Enter text"
+            />
+        )
+        cy.contains('@user').should('have.css', 'color', 'rgb(7, 168, 115)')
+    })
+
+    it('styles hashtags correctly', () => {
+        cy.mount(
+            <CanvasInput
+                value="Hello #tag"
+                onChange={cy.stub()}
+                onFocus={cy.stub()}
+                placeholder="Enter text"
+            />
+        )
+        cy.contains('#tag').should('have.css', 'color', 'rgb(112, 46, 230)')
+    })
+
+    it('styles emails correctly', () => {
+        cy.mount(
+            <CanvasInput
+                value="Contact user@example.com"
+                onChange={cy.stub()}
+                onFocus={cy.stub()}
+                placeholder="Enter text"
+            />
+        )
+        cy.contains('user@example.com').should('have.css', 'color', 'rgb(245, 142, 10)')
+    })
+
+    it('styles links correctly', () => {
+        cy.mount(
+            <CanvasInput
+                value="Visit https://example.com"
+                onChange={cy.stub()}
+                onFocus={cy.stub()}
+                placeholder="Enter text"
+            />
+        )
+        cy.contains('https://example.com').should('have.css', 'color', 'rgb(0, 127, 255)')
+    })
+})
+
+import React from 'react'
+import { getStyledText } from '@/helpers/getStyledText'
+
+const TestComponent = ({ text, condensed }: { text: string; condensed: boolean }) => (
+    <div>{getStyledText(text, condensed)}</div>
+)
+
+describe('getStyledText Helper', () => {
+    it('styles mentions correctly', () => {
+        cy.mount(<TestComponent text="@user" condensed={false} />)
+        cy.get('span').should('have.css', 'background-color', 'rgb(173, 240, 217)')
+        cy.get('span').should('have.css', 'color', 'rgb(7, 168, 115)')
+    })
+
+    it('styles hashtags correctly', () => {
+        cy.mount(<TestComponent text="#tag" condensed={false} />)
+        cy.get('span').should('have.css', 'background-color', 'rgb(219, 199, 255)')
+        cy.get('span').should('have.css', 'color', 'rgb(112, 46, 230)')
+    })
+
+    it('styles emails correctly', () => {
+        cy.mount(<TestComponent text="user@example.com" condensed={false} />)
+        cy.get('span').should('have.css', 'background-color', 'rgb(255, 230, 199)')
+        cy.get('span').should('have.css', 'color', 'rgb(245, 142, 10)')
+    })
+
+    it('styles links correctly', () => {
+        cy.mount(<TestComponent text="https://example.com" condensed={false} />)
+        cy.get('span').should('have.css', 'background-color', 'rgb(214, 235, 255)')
+        cy.get('span').should('have.css', 'color', 'rgb(0, 127, 255)')
+    })
+
+    it('condenses emails when condensed is true', () => {
+        cy.mount(<TestComponent text="user@example.com" condensed={true} />)
+        cy.get('span').find('svg').should('have.attr', 'data-icon', 'mail')
+    })
+
+    it('condenses links when condensed is true', () => {
+        cy.mount(<TestComponent text="https://example.com" condensed={true} />)
+        cy.get('span').find('svg').should('have.attr', 'data-icon', 'link')
+    })
+})
+
+import TaskForm from '@/components/taskList/TaskForm'
+import React from 'react'
+
+describe('TaskForm Component', () => {
+    it('renders correctly', () => {
+        const mockProps = {
+            newTask: '',
+            setNewTask: cy.stub(),
+            handleSubmit: cy.stub(),
+            setShowElements: cy.stub(),
+            tasksExist: false,
+            showElements: false,
+        }
+
+        cy.mount(<TaskForm {...mockProps} />)
+        cy.get('input[placeholder="Type to add new task"]').should('exist')
+        cy.get('svg').should('have.class', 'text-blue-500')
+    })
+
+    it('calls setNewTask when typing', () => {
+        const setNewTask = cy.stub()
+        const mockProps = {
+            newTask: '',
+            setNewTask,
+            handleSubmit: cy.stub(),
+            setShowElements: cy.stub(),
+            tasksExist: false,
+            showElements: false,
+        }
+
+        cy.mount(<TaskForm {...mockProps} />)
+        cy.get('input[placeholder="Type to add new task"]').type('New Task')
+        cy.wrap(setNewTask).should('have.been.calledWith', 'New Task')
+    })
+
+    it('calls setShowElements when input is focused', () => {
+        const setShowElements = cy.stub()
+        const mockProps = {
+            newTask: '',
+            setNewTask: cy.stub(),
+            handleSubmit: cy.stub(),
+            setShowElements,
+            tasksExist: false,
+            showElements: false,
+        }
+
+        cy.mount(<TaskForm {...mockProps} />)
+        cy.get('input[placeholder="Type to add new task"]').focus()
+        cy.wrap(setShowElements).should('have.been.calledWith', true)
+    })
+
+    it('shows avatar when tasks do not exist', () => {
+        const mockProps = {
+            newTask: '',
+            setNewTask: cy.stub(),
+            handleSubmit: cy.stub(),
+            setShowElements: cy.stub(),
+            tasksExist: false,
+            showElements: false,
+        }
+
+        cy.mount(<TaskForm {...mockProps} />)
+        cy.get('img[alt="@usuario"]').should('exist')
+    })
+
+    it('hides avatar when tasks exist', () => {
+        const mockProps = {
+            newTask: '',
+            setNewTask: cy.stub(),
+            handleSubmit: cy.stub(),
+            setShowElements: cy.stub(),
+            tasksExist: true,
+            showElements: false,
+        }
+
+        cy.mount(<TaskForm {...mockProps} />)
+        cy.get('img[alt="@usuario"]').should('not.exist')
+    })
+})
+
+import { useMobileDetection } from "@/hooks/useMobileDetection"
+
+const TestComponent = () => {
+    const isNarrowScreen = useMobileDetection()
+    return <div>{isNarrowScreen ? 'Narrow Screen' : 'Wide Screen'}</div>
+}
+
+describe('useMobileDetection Hook', () => {
+    it('detects wide screen', () => {
+        cy.viewport(1920, 1080)
+        cy.mount(<TestComponent />)
+        cy.contains('Wide Screen').should('be.visible')
+    })
+
+    it('detects narrow screen', () => {
+        cy.viewport('iphone-x')
+        cy.mount(<TestComponent />)
+        cy.contains('Narrow Screen').should('be.visible')
+    })
+
+    it('updates on resize', () => {
+        cy.viewport(1920, 1080)
+        cy.mount(<TestComponent />)
+        cy.contains('Wide Screen').should('be.visible')
+
+        cy.viewport('iphone-x')
+        cy.contains('Narrow Screen').should('be.visible')
+    })
+})
+
+import React from 'react'
+import { useTaskManager } from '@/hooks/useTaskManager'
+
+const TestComponent = () => {
+    const { tasks, addTask, editTask, isLoading, error } = useTaskManager()
+
+    return (
+        <div>
+            <div data-testid="loading">{isLoading ? 'Loading' : 'Not Loading'}</div>
+            <div data-testid="error">{error || 'No Error'}</div>
+            <ul>
+                {tasks.map((task) => (
+                    <li key={task.id}>{task.description}</li>
+                ))}
+            </ul>
+            <button onClick={() => addTask('New Task')}>Add Task</button>
+            <button onClick={() => editTask(1, 'Edited Task')}>Edit Task</button>
+        </div>
+    )
+}
+
+describe('useTaskManager Hook', () => {
+    beforeEach(() => {
+        cy.intercept('GET', '/api/tasks', { fixture: 'tasks.json' }).as('getTasks')
+    })
+
+    it('fetches tasks on mount', () => {
+        cy.mount(<TestComponent />)
+        cy.wait('@getTasks')
+        cy.get('li').should('have.length', 2)
+    })
+
+    it('adds a new task', () => {
+        cy.intercept('POST', '/api/tasks', { id: 3, description: 'New Task' }).as('addTask')
+        cy.mount(<TestComponent />)
+        cy.contains('Add Task').click()
+        cy.wait('@addTask')
+        cy.get('li').should('have.length', 3)
+    })
+
+    it('edits an existing task', () => {
+        cy.intercept('PUT', '/api/tasks', { id: 1, description: 'Edited Task' }).as('editTask')
+        cy.mount(<TestComponent />)
+        cy.contains('Edit Task').click()
+        cy.wait('@editTask')
+        cy.contains('Edited Task').should('be.visible')
+    })
+
+    it('handles fetch error', () => {
+        cy.intercept('GET', '/api/tasks', { statusCode: 500, body: { error: 'Server error' } }).as('getTasksError')
+        cy.mount(<TestComponent />)
+        cy.wait('@getTasksError')
+        cy.get('[data-testid="error"]').should('contain', 'Failed to load tasks')
+    })
+})
+
+describe('Task List', () => {
+    beforeEach(() => {
+        cy.visit('/')
+    })
+
+    it('allows adding a new task', () => {
+        const newTask = 'New task for testing'
+        cy.get('input[placeholder="Type to add new task"]').type(newTask)
+        cy.contains('Add').click()
+        cy.contains(newTask).should('be.visible')
+    })
+
+    it('allows editing an existing task', () => {
+        const initialTask = 'Initial task'
+        const editedTask = 'Edited task'
+
+
+        cy.get('input[placeholder="Type to add new task"]').type(initialTask)
+        cy.contains('Add').click()
+
+        cy.contains(initialTask).click()
+        cy.get('input[placeholder="Type to add new task"]').clear().type(editedTask)
+        cy.contains('Update').click()
+
+        cy.contains(editedTask).should('be.visible')
+        cy.contains(initialTask).should('not.exist')
+    })
+
+    it('displays loading state', () => {
+        cy.intercept('GET', '/api/tasks', (req) => {
+            req.reply((res) => {
+                res.send({ fixture: 'tasks.json' })
+            })
+        }).as('getTasks')
+
+        cy.visit('/')
+        cy.contains('Loading tasks...').should('be.visible')
+        cy.wait('@getTasks')
+        cy.contains('Loading tasks...').should('not.exist')
+    })
+
+    it('displays error state', () => {
+        cy.intercept('GET', '/api/tasks', { statusCode: 500, body: { error: 'Server error' } }).as('getTasksError')
+
+        cy.visit('/')
+        cy.wait('@getTasksError')
+        cy.contains('Failed to load tasks').should('be.visible')
+    })
+
+    it('handles mobile view', () => {
+        cy.viewport('iphone-x')
+        cy.visit('/')
+    })
+})
