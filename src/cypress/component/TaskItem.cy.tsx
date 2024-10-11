@@ -1,5 +1,5 @@
+import TaskItem from '@/components/taskList/TaskItem'
 import React from 'react'
-import TaskItem from '@/components/TaskItem'
 
 describe('TaskItem Component', () => {
     const mockTask = {
