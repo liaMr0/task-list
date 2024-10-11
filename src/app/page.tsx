@@ -1,5 +1,7 @@
+import { TaskList } from "@/components/taskList/TaskList";
+
 export default function Home() {
   return (
-    <h1>Add task</h1>
+    <TaskList />
   );
 }
