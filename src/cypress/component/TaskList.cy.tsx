@@ -14,9 +14,6 @@ const mockUseTaskManager = {
 const mockUseMobileDetection = cy.stub().returns(false);
 
 
-cy.stub(require('@/hooks/useTaskManager'), 'useTaskManager').returns(mockUseTaskManager);
-cy.stub(require('@/hooks/useMobileDetection'), 'useMobileDetection').returns(mockUseMobileDetection);
-
 describe('TaskList Component', () => {
     it('renders loading state', () => {
         mockUseTaskManager.isLoading = true;
