@@ -1,8 +1,6 @@
 # Task List
 
-## Description
-
-This project was built with **Next.js**, **Tailwind CSS**, **Shadcn**, and **TypeScript**. It includes automated testing using **Cypress**.
+This project was built with **Next.js**, **TailwindCSS**, **Shadcn**, and **TypeScript**. It includes automated testing using **Cypress** and follows the **Test-Driven Development** (TDD) methodology.
 
 ## Getting Started
 
