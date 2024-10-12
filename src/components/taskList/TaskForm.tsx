@@ -31,7 +31,7 @@ const TaskForm: React.FC<TaskFormProps> = ({
             />
         </div>
         {!tasksExist && (
-            <Avatar className={`h-8 w-8 transition-opacity duration-300 ${showElements && !newTask.trim() ? 'opacity-50' : newTask.trim() ? 'opacity-100' : 'opacity-50'}`}>
+            <Avatar className={`h-8 w-8 transition-opacity duration-300 ${showElements && !newTask.trim() ? 'opacity-0' : newTask.trim() ? 'opacity-50' : 'opacity-50'}`}>
                 <AvatarImage src="/avatar.png" alt="@usuario" className="object-cover" />
                 <AvatarFallback>U</AvatarFallback>
             </Avatar>
