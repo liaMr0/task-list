@@ -18,7 +18,6 @@ const TaskForm: React.FC<TaskFormProps> = ({
     handleSubmit,
     setShowElements,
     tasksExist,
-    showElements
 }) => (
     <form onSubmit={handleSubmit} className="flex items-center p-2">
         <SquarePlus className="h-6 w-6 text-blue-500 mr-2" />
