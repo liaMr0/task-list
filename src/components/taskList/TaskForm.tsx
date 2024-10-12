@@ -9,7 +9,6 @@ interface TaskFormProps {
     handleSubmit: (e: React.FormEvent) => void;
     setShowElements: (show: boolean) => void;
     tasksExist: boolean;
-    showElements: boolean;
 }
 
 const TaskForm: React.FC<TaskFormProps> = ({
