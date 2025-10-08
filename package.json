@@ -22,7 +22,7 @@
     "tailwindcss-animate": "^1.0.7"
   },
   "devDependencies": {
-    "@cypress/react": "^8.0.2",
+    "@cypress/react": "^9.0.0",
     "@cypress/webpack-dev-server": "^3.11.0",
     "@testing-library/cypress": "^10.0.2",
     "@types/node": "^20",

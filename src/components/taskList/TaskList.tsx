@@ -49,7 +49,6 @@ const TaskList: React.FC = () => {
                     handleSubmit={handleSubmit}
                     setShowElements={setShowElements}
                     tasksExist={tasks.length > 0}
-                    showElements={showElements}
                 />
             </div>
             <div className={`mt-2 ${tasks.length > 0 ? 'max-h-[60vh] overflow-y-auto' : ''}`}>
