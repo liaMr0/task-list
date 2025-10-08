@@ -28,3 +28,9 @@ pnpm dev
 # or
 bun dev
 ```
+
+## Deployment
+
+The application is deployed at the following URL:
+
+https://task-list-6kisxc2m5-liamr0s-projects.vercel.app/
