@@ -6,6 +6,8 @@
 // ***********************************************************
 
 import './commands'
+// CSS import is disabled due to compatibility issues between Next.js 15 and Cypress
+// Component tests will focus on functionality without styled rendering
 import { mount } from 'cypress/react'
 
 // Augment the Cypress namespace to include type definitions for
@@ -21,5 +23,7 @@ declare global {
 
 Cypress.Commands.add('mount', mount)
 
-// Import global styles if needed
-import '../../src/app/globals.css'
+// Import global styles - Commented out due to Next.js 15 compatibility issues
+// If you need styles in tests, import them directly in test files or
+// use a custom mount command that includes styles
+// import '../../src/app/globals.css'

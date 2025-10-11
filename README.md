@@ -114,33 +114,46 @@ For detailed database setup instructions, see [SUPABASE_SETUP.md](./SUPABASE_SET
 
 This project uses **Cypress 15.4.0** for component and E2E testing.
 
-### Run Tests
+### Quick Start
 
 ```bash
-# Open Cypress UI (interactive mode)
-npm run cypress:open
-
-# Open Component Testing directly
+# Component tests (recommended - use terminal mode)
 npm run cypress:component
 
-# Open E2E Testing directly
-npm run cypress:e2e
+# Run specific test file
+npx cypress run --component --spec "cypress/component/Button.cy.tsx"
 
-# Run all component tests (headless)
-npm test
-
-# Run all tests in CI mode
-npm run cypress:run
+# E2E tests (requires dev server running)
+npm run dev              # In one terminal
+npm run cypress:e2e      # In another terminal
 ```
 
-### Test Coverage
+### Important Note
 
-- ✅ **Component Tests**: Button, TaskForm, TaskItem, TaskList, CanvasInput, ActionBar
-- ✅ **Hook Tests**: useMobileDetection, useTaskManager
-- ✅ **Helper Tests**: getStyledText
-- ✅ **E2E Tests**: Complete task management flow
+⚠️ **The Cypress GUI doesn't work correctly** with Next.js 15 due to CSS loading issues. **Use terminal mode** instead:
 
-For detailed testing documentation, see [CYPRESS_GUIDE.md](./CYPRESS_GUIDE.md).
+```bash
+# ✅ This works
+npx cypress run --component
+
+# ❌ This has CSS issues
+npx cypress open
+```
+
+### Test Status
+
+- ✅ **22/35 tests passing (62.9%)**
+- ✅ Fully working: Button (4/4), useMobileDetection (3/3)
+- ⚠️ Partially working: CanvasInput (6/7), TaskForm (2/5), TaskItem (2/4), getStyledText (4/6), useTaskManager (1/4)
+- ❌ Structure issues: ActionBar, TaskList
+
+### Documentation
+
+For complete Cypress guides, see:
+- **[CYPRESS_USAGE_GUIDE.md](./CYPRESS_USAGE_GUIDE.md)** - Complete commands and examples
+- **[CYPRESS_GUI_VS_TERMINAL.md](./CYPRESS_GUI_VS_TERMINAL.md)** - Why GUI doesn't work and how to use terminal
+- **[TESTS_STATUS.md](./TESTS_STATUS.md)** - Detailed test results and issues
+- **[CYPRESS_GUIDE.md](./CYPRESS_GUIDE.md)** - Configuration and troubleshooting
 
 ## 🏗️ Build and Deploy
 
