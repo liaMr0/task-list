@@ -155,6 +155,24 @@ For complete Cypress guides, see:
 - **[TESTS_STATUS.md](./TESTS_STATUS.md)** - Detailed test results and issues
 - **[CYPRESS_GUIDE.md](./CYPRESS_GUIDE.md)** - Configuration and troubleshooting
 
+## ⚡ Features
+
+### Loading System
+The application includes a sophisticated loading system:
+- **Skeleton Loading**: Animated skeleton screens while data loads
+- **Loading Spinners**: Available in 3 sizes (sm, md, lg)
+- **Loading Overlay**: Cover content during operations
+- **Error States**: User-friendly error messages with retry functionality
+
+For detailed loading system documentation, see **[LOADING_SYSTEM.md](./LOADING_SYSTEM.md)**
+
+### Components
+- ✅ **Task Management**: Add, edit, and view tasks
+- ✅ **Responsive Design**: Works on desktop, tablet, and mobile
+- ✅ **Real-time Updates**: Instant UI updates
+- ✅ **Skeleton Loading**: Professional loading states
+- ✅ **Error Handling**: Graceful error recovery
+
 ## 🏗️ Build and Deploy
 
 ### Build for Production
@@ -175,8 +193,6 @@ npm run lint
 The application is deployed on Vercel:
 
 **Live URL:** [https://task-list-6kisxc2m5-liamr0s-projects.vercel.app/](https://task-list-6kisxc2m5-liamr0s-projects.vercel.app/)
-
-## 🛠️ Available Scripts
 
 ```bash
 # Development
