@@ -63,9 +63,6 @@ pnpm dev
 # or
 bun dev
 ```
-
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
-
 ## 🗄️ Database Configuration
 
 This project uses **Prisma** with **Supabase** PostgreSQL database.
@@ -126,66 +123,6 @@ npx cypress run --component --spec "cypress/component/Button.cy.tsx"
 # E2E tests (requires dev server running)
 npm run dev              # In one terminal
 npm run cypress:e2e      # In another terminal
-```
-
-### Important Note
-
-⚠️ **The Cypress GUI doesn't work correctly** with Next.js 15 due to CSS loading issues. **Use terminal mode** instead:
-
-```bash
-# ✅ This works
-npx cypress run --component
-
-# ❌ This has CSS issues
-npx cypress open
-```
-
-### Test Status
-
-- ✅ **22/35 tests passing (62.9%)**
-- ✅ Fully working: Button (4/4), useMobileDetection (3/3)
-- ⚠️ Partially working: CanvasInput (6/7), TaskForm (2/5), TaskItem (2/4), getStyledText (4/6), useTaskManager (1/4)
-- ❌ Structure issues: ActionBar, TaskList
-
-### Documentation
-
-For complete Cypress guides, see:
-- **[CYPRESS_USAGE_GUIDE.md](./CYPRESS_USAGE_GUIDE.md)** - Complete commands and examples
-- **[CYPRESS_GUI_VS_TERMINAL.md](./CYPRESS_GUI_VS_TERMINAL.md)** - Why GUI doesn't work and how to use terminal
-- **[TESTS_STATUS.md](./TESTS_STATUS.md)** - Detailed test results and issues
-- **[CYPRESS_GUIDE.md](./CYPRESS_GUIDE.md)** - Configuration and troubleshooting
-
-## ⚡ Features
-
-### Loading System
-The application includes a sophisticated loading system:
-- **Skeleton Loading**: Animated skeleton screens while data loads
-- **Loading Spinners**: Available in 3 sizes (sm, md, lg)
-- **Loading Overlay**: Cover content during operations
-- **Error States**: User-friendly error messages with retry functionality
-
-For detailed loading system documentation, see **[LOADING_SYSTEM.md](./LOADING_SYSTEM.md)**
-
-### Components
-- ✅ **Task Management**: Add, edit, and view tasks
-- ✅ **Responsive Design**: Works on desktop, tablet, and mobile
-- ✅ **Real-time Updates**: Instant UI updates
-- ✅ **Skeleton Loading**: Professional loading states
-- ✅ **Error Handling**: Graceful error recovery
-
-## 🏗️ Build and Deploy
-
-### Build for Production
-
-```bash
-# Create production build
-npm run build
-
-# Start production server
-npm start
-
-# Run linting
-npm run lint
 ```
 
 ### Deployment
