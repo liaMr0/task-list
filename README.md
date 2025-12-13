@@ -1,16 +1,16 @@
 # Task List
 
-This project was built with **Next.js 15**, **React 19**, **TailwindCSS**, **Shadcn**, and **TypeScript**. It includes automated testing using **Cypress** and follows the **Test-Driven Development** (TDD) methodology.
+This project was built with **Next.js 16**, **React 19**, **TailwindCSS 4**, **Shadcn**, and **TypeScript**. It includes automated testing using **Cypress** and follows the **Test-Driven Development** (TDD) methodology.
 
 ## 🚀 Tech Stack
 
-- **Framework**: Next.js 15.5.4
+- **Framework**: Next.js 16.0.10
 - **Language**: TypeScript 5.9.3
-- **UI Library**: React 19.2.0
-- **Styling**: TailwindCSS 3.4.18 + Shadcn UI
+- **UI Library**: React 19.2.3
+- **Styling**: TailwindCSS 4.1.18 + Shadcn UI
 - **Database**: PostgreSQL (Supabase)
-- **ORM**: Prisma 6.17.1
-- **Testing**: Cypress 15.4.0
+- **ORM**: Prisma 7.1.0
+- **Testing**: Cypress 15.7.1
 - **Icons**: Lucide React
 
 ## 📋 Getting Started
